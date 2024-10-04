@@ -16,7 +16,7 @@ book:
     
 
 format:
-  pdf: default
+#  pdf: default
   html:
     theme:
       light: cosmo
@@ -35,5 +35,5 @@ webr:
 
 editor: source
 
-execute:
-  freeze: true
+#execute:
+#  freeze: true
