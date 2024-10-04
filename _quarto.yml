@@ -30,7 +30,10 @@ format:
 engine: knitr
 filters: [webr]
 webr:
-    cell-options:
-        autorun: true
+  cell-options:
+    autorun: true
 
 editor: source
+
+execute:
+  freeze: true

@@ -1,6 +1,6 @@
 
 <!-- badges: start -->
-[![R-CMD-check](https://github.com/coatless-textbooks/c4ds/actions/workflows/publish-book.yaml/badge.svg)](https://github.com/coatless-textbooks/c4ds/actions/workflows/publish-book.yaml)
+[![Publish Status](https://github.com/coatless-textbooks/c4ds/actions/workflows/publish-book.yaml/badge.svg)](https://github.com/coatless-textbooks/c4ds/actions/workflows/publish-book.yaml)
 <!-- badges: end -->
 
 # Computing for Data Science (`c4ds`)
