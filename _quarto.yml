@@ -1,0 +1,34 @@
+project:
+  type: book
+  output-dir: _book
+  
+book:
+  title: "Computing for Data Science (C4DS)"
+  reader-mode: true
+
+  site-url: https://c4ds.thecoatlessprofessor.com
+  repo-url: https://github.com/coatless-textbooks/c4ds/
+  repo-branch: main
+  repo-actions: [edit, issue]
+  chapters:
+    - index.qmd
+
+format:
+  pdf: default
+  html:
+    theme:
+      light: cosmo
+      dark: darkly
+    code-link: true
+    toc: true
+
+    author-meta: "James Balamuta"
+    callout-appearance: simple
+
+engine: knitr
+filters: [webr]
+webr:
+    cell-options:
+        autorun: true
+
+editor: source

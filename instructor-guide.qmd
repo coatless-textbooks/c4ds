@@ -36,13 +36,11 @@ My e-mail template for the requesting academic licensing is:
 **RSTUDIO_PRODUCTS_HERE***? I am **YOUR_NAME** within the Department of 
 **DEPT_NAME** at the University of **YOUR_STATE**.
 >  
-> These services are currently being used during Summer Session 2 in STAT 385: Statistics Programming Methods. The syllabus is available for public viewing here:
+> These services are currently being used during **SEMESTER** in **COURSE NAME**.
+> The syllabus is available for public viewing here:
 >  
-> http://stat385.thecoatlessprofessor.com/syllabus/
+> <link-to-the-syllabus>
 > 
-> The relevant section emphasizing RStudio software can be found here:
->
-> http://stat385.thecoatlessprofessor.com/syllabus/#software
 
 At the end of the syllabus, I provide a description of the course software:
 

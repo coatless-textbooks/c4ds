@@ -3,6 +3,6 @@
 .RData
 .Ruserdata
 _book
-_bookdown_files
-spm.pdf
-spm.rds
+*_files
+/.quarto/
+*.html
