@@ -1,7 +1,17 @@
-[![TravisCI Build Status](https://api.travis-ci.org/coatless/spm.svg)](https://travis-ci.org/coatless/spm)
 
-# Statistical Programming Methods with R (`spm`)
+<!-- badges: start -->
+[![R-CMD-check](https://github.com/coatless-textbooks/c4ds/actions/workflows/publish-book.yaml/badge.svg)](https://github.com/coatless-textbooks/c4ds/actions/workflows/publish-book.yaml)
+<!-- badges: end -->
 
-The foundations of a textbook aimed at providing Statistical Programming Methods for [STAT 385 @ UIUC](http://stat385.com). The current iteration of the
-textbook can be viewed at <http://spm.thecoatlessprofessor.com/>.
+# Computing for Data Science (`c4ds`)
+
+The foundation of this textbook is based on the course STATS 290: 
+Computing for Data Science (C4DS) taught at Stanford University. 
+
+The current iteration of the textbook can be viewed at <https://c4ds.thecoatlessprofessor.com/>.
+
+## License
+
+This work is licensed under a 
+[Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License](http://creativecommons.org/licenses/by-nc-sa/4.0/).
 
