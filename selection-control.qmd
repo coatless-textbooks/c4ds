@@ -1,0 +1,311 @@
+# Conditional Statements for Statistical Analysis
+
+# Overview
+
+Within this document, we'll focus on different statistical use cases for selection
+control. Selection control refers to a program control structure that allows for
+conditional execution of code. We'll cover the following topics:
+
+- if statements;
+- if-else statements;
+- if-elseif-else statements;
+- vectorized ifelse statements; and,
+- switch statements in R. 
+
+We'll explore how to use these conditional statements for tasks like applying classifications based on thresholds and discretizing continuous values into bins.
+
+## if Statements
+
+We make choices based on conditions every day. For example:
+
+- If the alarm rings, we get up
+- If a plant looks dry, we water it
+- If it's raining, we take an umbrella
+
+These are **conditional decisions**: we act only when a specific condition is met.
+
+In R, we use `if` statements to make these kinds of decisions. This structure 
+tells R to perform an action only when the condition is true. The basic 
+structure of an `if` statement is given in @lst-if-bare-bones. 
+
+:::{.columns}
+
+
+:::{.column}
+```{r}
+#| eval: false
+#| lst-label: lst-if-bare-bones
+#| lst-cap: if Statement Structure
+if (condition) {
+  # Action if condition is true
+}
+```
+:::
+
+:::{.column}
+```{mermaid}
+%%| echo: false
+%%| label: fig-if-bare-bones
+%%| fig-cap: Visual flow of an if statement.
+graph TD
+    A([Start])  --> B{Condition}
+    B -->|"&lt;condition&gt; is FALSE"| E([End])
+    B -->|"&lt;condition&gt; is TRUE"| C[Execute if block]
+    C --> E
+    style A fill:#f9f,stroke:#333,stroke-width:2px
+    style B fill:#bbf,stroke:#333,stroke-width:2px
+    style C fill:#dfd,stroke:#333,stroke-width:2px
+    style E fill:#f9f,stroke:#333,stroke-width:2px
+```
+:::
+
+
+:::
+
+
+
+
+### Control Flow Diagrams
+
+We can visualize the flow of an `if` statement using a control flow diagram.
+Alongside the `if` statement structure in @lst-if-bare-bones, we also included
+a control flow diagram in @fig-if-bare-bones. By following the arrows in the
+diagram from the start to the end of the process we can see a step-by-step
+breakdown of the process involved in executing an `if` statement. 
+
+The control flow diagram for the `if` statement consists of five steps:
+
+1. **Start**: Begin the process
+2. **Condition**: Check if the condition is true or false
+3. **If true**: Execute the code in the `if` block
+4. **If false**: Skip the `if` block and continue to the end
+5. **End**: Finish the process
+
+For each step, the diagram uses color-coding and shapes for clarity. We've 
+created a key in @fig-flow-chart-key to explain the symbols used in the flow chart. 
+
+```{mermaid}
+%%| label: fig-flow-chart-key
+%%| fig-cap: Symbols used in constructing the flow chart diagram for control flow.
+%%| echo: false
+graph LR
+    A([Start/End]) --- A1([Oval: Indicates the start or end of a process])
+    style A fill:#f9f,stroke:#333,stroke-width:2px
+    style A1 fill:#fff,stroke:#fff,stroke-width:0px
+
+    B{Decision} --- B1[Diamond: Represents a decision or branching point]
+    style B fill:#bbf,stroke:#333,stroke-width:2px
+    style B1 fill:#fff,stroke:#fff,stroke-width:0px
+
+    C[Process] --- C1[Rectangle: Represents a process or action step]
+    style C fill:#dfd,stroke:#333,stroke-width:2px
+    style C1 fill:#fff,stroke:#fff,stroke-width:0px
+
+    D((Connector)) --- D1[Circle: Used as a connector between flow lines]
+    style D fill:#fff,stroke:#333,stroke-width:2px
+    style D1 fill:#fff,stroke:#fff,stroke-width:0px
+
+    E[/Input/Output/] --- E1[Parallelogram: Represents input or output operations]
+    style E fill:#ffd,stroke:#333,stroke-width:2px
+    style E1 fill:#fff,stroke:#fff,stroke-width:0px
+
+    linkStyle 0 stroke-width:0px
+    linkStyle 1 stroke-width:0px
+    linkStyle 2 stroke-width:0px
+    linkStyle 3 stroke-width:0px
+    linkStyle 4 stroke-width:0px
+```
+
+We'll frequently use these diagrams to illustrate the flow of control structures.
+
+
+### Example: Classifying a Value Based on a Threshold
+
+Let's consider an example of threshold-based classification, a fundamental 
+concept in statistics often used for decision-making. In this scenario, we 
+evaluate a value against a predetermined threshold to categorize it accordingly.
+Usually, we will estimate the value of a variable and compare it to a pre-set
+threshold. 
+
+For instance, if we have a test score and want to determine if it meets the
+passing threshold, we can use an `if` statement. Suppose we have a score of 75 
+and a passing threshold of 80, we can use the following code:
+
+```r
+value <- 75
+threshold <- 80
+
+if (value >= threshold) {
+  print("Pass")
+}
+```
+
+```{mermaid}
+%%| label: fig-if-threshold-example
+%%| fig-cap: Visual representation of the if statement with a threshold.
+%%| echo: false
+graph LR
+    A([Start]) --> B["value = 75<br>threshold = 80"]
+    B --> C{"value &ge; threshold"}
+    C -->|True| D["Print 'Pass'"]
+    C -->|False| F([End])
+    D --> F
+
+    style A fill:#f9f,stroke:#333,stroke-width:2px
+    style B fill:#dfd,stroke:#333,stroke-width:2px
+    style C fill:#bbf,stroke:#333,stroke-width:2px
+    style F fill:#f9f,stroke:#333,stroke-width:2px
+```
+
+
+In this example, the program checks if the score **meets or exceeds** the threshold. 
+If it does, it prints `"Pass"`. In this case, since 75 is less than 80, the condition `value >= threshold` is `FALSE`. Therefore, the code inside the if block (printing `"Pass"`) 
+is not executed. 
+
+In the next section, we'll explore the `if-else` statement, which allows us to
+specify an alternative action if the condition is not met.
+
+
+## if-else Statements
+
+In real life, we often have backup plans when making decisions. For example:
+
+- if it's raining, take an umbrella; otherwise, bring sunglasses.
+- if the traffic is heavy, take a different route; otherwise, stay on the same route.
+- if you're hungry, eat a snack; otherwise, wait for the next meal.
+
+These scenarios illustrate conditional decisions with both primary and secondary 
+actions. In programming, we use similar logic to control program flow. The 
+`if-else` statement in R allows us to execute one block of code if a condition
+is true and another _different_ block of code if it's false. The structure of 
+an `if-else` statement and its control flow diagram are shown in @lst-if-else-bare-bones
+and @fig-if-else-bare-bones, respectively.
+
+:::{.columns}
+
+
+:::{.column}
+```{r}
+#| eval: false
+#| lst-label: lst-if-else-bare-bones
+#| lst-cap: if-else Statement Structure
+if (condition) {
+  # code to execute if condition is TRUE
+} else {
+  # code to execute if condition is FALSE
+}
+```
+:::
+
+:::{.column}
+```{mermaid}
+%%| echo: false
+%%| label: fig-if-else-bare-bones
+%%| fig-cap: Visual representation of the if-else statement.
+graph TD
+    A([Start])  --> B{Condition}
+    B -->|"&lt;condition&gt; is TRUE"| C[Execute if block]
+    B -->|"&lt;condition&gt; is FALSE"| D[Execute else block]
+    C --> E([End])
+    D --> E
+    style A fill:#f9f,stroke:#333,stroke-width:2px
+    style B fill:#bbf,stroke:#333,stroke-width:2px
+    style C fill:#dfd,stroke:#333,stroke-width:2px
+    style D fill:#dfd,stroke:#333,stroke-width:2px
+    style E fill:#f9f,stroke:#333,stroke-width:2px
+```
+:::
+
+
+:::
+
+
+### Example: Revisiting Classifying a value based on a threshold 
+
+Let's revisit the example of classifying a value based on a threshold. In this
+case, we'll use an `if-else` statement to provide outcomes for both scenarios.
+Just as before, we'll print `"Pass"` if the value is greater than or equal to
+the threshold. With the addition of the `else` clause, we'll print `"Fail"` if
+the value is less than the threshold. 
+
+```{r}
+value <- 75
+threshold <- 80
+
+if (value >= threshold) {
+  print("Pass")
+} else {
+  print("Fail")
+}
+```
+
+
+```{mermaid}
+%%| label: fig-if-else-threshold-example
+%%| fig-cap: Visual representation of the if-else statement with a threshold.
+%%| echo: false
+graph LR
+    A([Start]) --> B["`value = 75
+    threshold = 80`"]
+    B --> C{"value &ge; threshold"}
+    C -->|True| D["Print 'Pass'"]
+    C -->|False| E["Print 'Fail'"]
+    D --> F([End])
+    E --> F
+
+    style A fill:#f9f,stroke:#333,stroke-width:2px
+    style B fill:#dfd,stroke:#333,stroke-width:2px
+    style C fill:#bbf,stroke:#333,stroke-width:2px
+    style F fill:#f9f,stroke:#333,stroke-width:2px
+```
+
+### Example: Significance Testing
+
+In statistical analysis, we often use p-values to determine the significance of
+results. A $p$-value is a measure of the strength of evidence against the null
+hypothesis. If the $p$-value is less than a pre-set significance level (usually
+$\alpha = 0.05$), we reject the null hypothesis. We can use an `if-else` statement to
+determine the significance of a $p$-value. 
+
+In the following example, we'll check if a p-value is less than the significance
+level of 0.05. If it is, we'll print `"Reject the null hypothesis."`; 
+otherwise, we'll print `"Do not reject the null hypothesis"`.
+
+
+```{r}
+# Sample p-value from a statistical test
+p_value <- 0.03  # Example p-value
+
+# Significance level
+alpha <- 0.05
+
+# Check the significance of the p-value
+if (p_value < alpha) {
+  print("Reject the null hypothesis.")
+} else {
+  print("Do not reject the null hypothesis.")
+}
+```
+
+
+```{mermaid}
+%%| label: fig-if-else-p-value-example
+%%| fig-cap: Visual representation of the if-else statement applied to significance testing
+%%| echo: false
+graph LR
+    A([Start]) --> B["`*p*-value = 0.03
+    alpha = 0.05`"]
+    B --> C{"value &ge; threshold"}
+    C -->|True| D["Print 'Reject the null hypothesis'"]
+    C -->|False| E["Print 'Do not reject the null hypothesis.'"]
+    D --> F([End])
+    E --> F
+
+    style A fill:#f9f,stroke:#333,stroke-width:2px
+    style B fill:#dfd,stroke:#333,stroke-width:2px
+    style C fill:#bbf,stroke:#333,stroke-width:2px
+    style F fill:#f9f,stroke:#333,stroke-width:2px
+    style E fill:#dfd,stroke:#333,stroke-width:2px
+```
+
+

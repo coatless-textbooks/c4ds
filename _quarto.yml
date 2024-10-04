@@ -12,6 +12,8 @@ book:
   repo-actions: [edit, issue]
   chapters:
     - index.qmd
+    - selection-control.qmd
+    
 
 format:
   pdf: default
