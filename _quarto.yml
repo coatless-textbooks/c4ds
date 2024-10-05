@@ -16,7 +16,6 @@ book:
     
 
 format:
-#  pdf: default
   html:
     theme:
       light: cosmo

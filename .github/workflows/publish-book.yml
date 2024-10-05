@@ -54,6 +54,7 @@ jobs:
         uses: actions/upload-pages-artifact@v2
         with: 
           retention-days: 1
+          path: '_book'
       
       # Use an Action deploy to push the artifact onto GitHub Pages
       # This requires the `Action` tab being structured to allow for deployment
