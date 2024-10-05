@@ -1,8 +1,6 @@
 # Conditional Statements for Statistical Analysis
 
-# Overview
-
-Within this document, we'll focus on different statistical use cases for selection
+Within this chapter, we'll focus on different statistical use cases for selection
 control. Selection control refers to a program control structure that allows for
 conditional execution of code. We'll cover the following topics:
 
@@ -147,8 +145,8 @@ if (value >= threshold) {
 graph LR
     A([Start]) --> B["value = 75<br>threshold = 80"]
     B --> C{"value &ge; threshold"}
-    C -->|True| D["Print 'Pass'"]
-    C -->|False| F([End])
+    C -->|TRUE| D["Print 'Pass'"]
+    C -->|FALSE| F([End])
     D --> F
 
     style A fill:#f9f,stroke:#333,stroke-width:2px
@@ -248,8 +246,8 @@ graph LR
     A([Start]) --> B["`value = 75
     threshold = 80`"]
     B --> C{"value &ge; threshold"}
-    C -->|True| D["Print 'Pass'"]
-    C -->|False| E["Print 'Fail'"]
+    C -->|TRUE| D["Print 'Pass'"]
+    C -->|FALSE| E["Print 'Fail'"]
     D --> F([End])
     E --> F
 
@@ -296,8 +294,8 @@ graph LR
     A([Start]) --> B["`*p*-value = 0.03
     alpha = 0.05`"]
     B --> C{"value &ge; threshold"}
-    C -->|True| D["Print 'Reject the null hypothesis'"]
-    C -->|False| E["Print 'Do not reject the null hypothesis.'"]
+    C -->|TRUE| D["Print 'Reject the null hypothesis'"]
+    C -->|FALSE| E["Print 'Do not reject the null hypothesis.'"]
     D --> F([End])
     E --> F
 
