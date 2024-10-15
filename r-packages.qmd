@@ -1,0 +1,342 @@
+---
+title: "R Packages"
+format: 
+  html:
+    toc: true
+---
+
+This chapter walks you through the process of creating an R package, from setting
+up your development environment to sharing your package with the world. Each
+step is explained in detail to help you understand the package development process.
+
+## Set up the development environment
+
+To begin creating your R package, you need to set up your development environment:
+
+1. Install the operating system tools required for package development:
+   - If on macOS, install Xcode Command Line Tools by running `xcode-select --install` in the terminal.
+   - If on Windows, install Rtools from https://cran.r-project.org/bin/windows/Rtools/>
+   - If on Linux, install the R development package using your package manager (e.g., `sudo apt-get install r-base-dev`)
+2. Install necessary R development packages by running the following commands in the R console:
+
+```r
+install.packages(c("devtools", "roxygen2", "testthat", "knitr"))
+```
+
+These packages will help you with package development, documentation, testing, and vignette creation.
+
+## Create the package structure
+
+To create your package structure:
+
+1. In RStudio, go to File > New Project > New Directory > R Package.
+2. Choose a name for your package. 
+   - Use only letters, numbers, and periods in the name. 
+   - Avoid using hyphens or underscores.
+3. Select a directory where you want to create your package.
+4. Click "Create Project".
+
+This will create a new directory with the basic structure of an R package, including:
+
+```sh
+.
+├── DESCRIPTION     # Metadata about your package
+├── NAMESPACE       # Exporting and importing code
+├── R               # Directory for your R code
+│   └── hello.R
+├── MyPackage.Rproj # RStudio project file
+└── man             # Directory for documentation
+    └── hello.Rd
+```
+
+## Edit the `DESCRIPTION` file
+
+The `DESCRIPTION` file contains metadata about your package. Edit it to include:
+
+- Package: Your package name
+- Title: A short, one-line description of your package
+- Version: Start with "0.1.0" for a new package
+- Author: Your name and email
+- Maintainer: Usually the same as the Author
+- Description: A more detailed description of what your package does
+- License: Choose an appropriate license (e.g., GPL-3, MIT, CC0)
+- Imports: List the packages your package depends on
+- Suggests: List packages used for examples or tests
+
+Example:
+
+```dcf
+Package: mypackage
+Title: What The Package Does (One Line, Title Case)
+Version: 0.1.0
+Author: Your Name <your.email@example.com>
+Maintainer: Your Name <your.email@example.com>
+Description: More about what it does (maybe more than one line).
+License: AGPL-3
+Imports: 
+    dplyr,
+    ggplot2
+Suggests: 
+    testthat,
+    knitr
+```
+
+## Write R functions
+
+To add functions to your package:
+
+1. Create new R script files in the `R/` directory of your package.
+2. Write your functions in these files.
+   - Use meaningful names for your files and functions.
+   - Keep related functions in the same file.
+
+Example function in `R/hello.R`:
+
+```r
+#' Say hello to a person
+#'
+#' This function takes a name as input and returns a greeting.
+#'
+#' @param name A character string representing a person's name
+#' @return A character string with a greeting
+#' @export
+hello <- function(name) {
+  paste0("Hello, ", name, "!")
+}
+```
+
+The `#'` comments are roxygen2 documentation, which we'll cover in the next step.
+
+## Document your functions
+
+To document your functions:
+
+1. Use roxygen2 comments (starting with `#'`) above each function.
+2. Include a brief description, parameter details, return value, and examples.
+3. Use tags like @param, @return, @examples, and @export.
+4. Run `devtools::document()` to generate documentation files.
+
+Let's create a new function called `square()` and document it with roxygen2.
+
+Example function and inline documentation in `R/square.R`:
+
+```r
+#' Calculate the square of a number
+#'
+#' This function takes a numeric input and returns its square.
+#'
+#' @param x A numeric value
+#' @return The square of the input value
+#' @examples
+#' square(4)
+#' square(-2)
+#' @export
+square <- function(x) {
+  stopifnot(is.numeric(x))
+  x^2
+}
+```
+
+After writing your documentation, run `devtools::document()` to generate the
+`man/` files and update the `NAMESPACE`.
+
+The package structure should now look like this:
+
+```sh
+.
+├── DESCRIPTION     # Metadata about your package
+├── NAMESPACE       # Exporting and importing code
+├── R               # Directory for your R code
+│   ├── hello.R
+│   └── square.R
+├── MyPackage.Rproj # RStudio project file
+└── man             # Directory for documentation
+    ├── hello.Rd
+    └── square.Rd
+```
+
+## Add data (optional)
+
+The packages have the ability to automatically load data on demand when 
+the package is loaded.
+
+To include datasets in your package:
+
+1. Create a `data/` directory in your package if it doesn't exist.
+2. Save your dataset using `save()`. For example: `save(my_data, file = "data/my_data.rda")`
+3. Document your dataset using roxygen2 comments in an R file (e.g., `R/data.R`).
+
+Example dataset documentation in `R/data.R`:
+
+```r
+#' Example dataset of plant growth
+#'
+#' A dataset containing plant heights and treatments.
+#'
+#' @format A data frame with 30 rows and 2 variables:
+#' \describe{
+#'   \item{height}{Plant height, in cm}
+#'   \item{treatment}{Treatment group (A, B, or C)}
+#' }
+#' @source {Made up data for illustration}
+"plant_growth"
+```
+
+The package structure should now look like this:
+
+```sh
+.
+├── DESCRIPTION     # Metadata about your package
+├── NAMESPACE       # Exporting and importing code
+├── R               # Directory for your R code
+│   ├── hello.R
+│   └── square.R
+├── data            # Directory for datasets
+│   └── plant_growth.rda
+├── MyPackage.Rproj # RStudio project file
+└── man             # Directory for documentation
+    ├── hello.Rd
+    ├── plant_growth.Rd
+    └── square.Rd
+```
+
+
+## Write tests
+
+Regular testing helps ensure your package functions work as expected and helps 
+catch bugs early. We recommend using the testthat package for testing instead
+of just running checks of R code.
+
+To write tests for your package:
+
+1. Create a `tests/testthat` directory if it doesn't exist.
+2. Create a `testthat.R` file in the `tests/` directory to load the test files.
+   - This file should contain `library(testthat)`, `library(MyPackage)`, and `test_check("MyPackage")`.
+2. Create test files with names starting with `"test-"` (e.g., `test-square.R`).
+3. Use testthat functions like `expect_equal()`, `expect_error()`, etc.
+4. Run tests using `devtools::test()`.
+
+Test infrastructure is set up using 
+
+```r
+usethis::use_testthat()
+```
+
+You can quickly create a test for an open R script using 
+
+```r
+usethis::use_test()
+```
+
+Example test file (`tests/testthat/test-square.R`):
+
+```r
+test_that("square(): works correctly", {
+  expect_equal(square(2), 4)
+  expect_equal(square(-3), 9)
+  expect_equal(square(0), 0)
+})
+
+test_that("square(): handles non-numeric input", {
+  expect_error(square("a"))
+  expect_error(square(TRUE))
+})
+```
+
+
+## Build and check the package
+
+To build and check your package:
+
+1. Run `devtools::build()` to create a package bundle.
+2. Run `devtools::check()` to perform a comprehensive check of your package.
+3. Address any warnings or errors reported by the check.
+
+Common issues to watch for:
+
+- Undocumented functions or parameters
+- Missing or incorrect NAMESPACE entries
+- Code that doesn't pass R CMD check
+- Vignette building problems
+
+Aim to have your package pass R CMD check with 0 errors, 0 warnings, and 0 notes
+for the best chance of CRAN acceptance.
+
+
+## Create a `README.md` and vignettes
+
+Creating documentation:
+
+1. Write a README.md file in the package root directory:
+   - Include a brief description of your package
+   - Provide installation instructions
+   - Show a simple example of package usage
+   - Add any badges (e.g., CRAN status, build status)
+2. Create vignettes to provide in-depth tutorials:
+   - Use `usethis::use_vignette("my-vignette")` to set up a vignette
+   - Write your vignette using R Markdown or Quarto.
+   - Include examples, explanations, and use cases
+
+Example README.md structure:
+
+````md
+# MyPackage
+
+## Overview
+Brief description of what your package does.
+
+## Installation
+You can install the package from GitHub:
+
+```r
+# install.packages("remotes")
+remotes::install_github("username/MyPackage")
+```
+
+## Usage
+Basic example of how to use your package:
+
+```r
+library(MyPackage)
+result <- my_function(arg1, arg2)
+```
+
+## More Information
+For more detailed information, please refer to the vignettes:
+
+```r
+browseVignettes("MyPackage")
+```
+````
+
+## Share your package
+
+By sharing your package, you contribute to the R community and make your work accessible to others.
+You can share your package in several ways:
+
+1. Push to GitHub:
+   - Initialize a git repository in your package directory
+   - Create a new repository on GitHub
+   - Push your local repository to GitHub
+2. Submit to CRAN (optional):
+   - Ensure your package passes all CRAN checks
+   - Write a cran-comments.md file explaining the submission
+   - Use `devtools::release()` to submit your package
+   - On subsequent updates, use `devtools::submit_cran()` to skip devtools questions
+     to immediately submit your package to CRAN.
+
+Remember to:
+
+- Keep your GitHub repository up-to-date
+- Use semantic versioning for your package versions
+- Respond promptly to any CRAN feedback
+- Maintain your package with regular updates and bug fixes
+
+## Conclusion
+
+Making an R package is a rewarding process that allows you to share your code
+and contribute to the R ecosystem. Through these steps, you can create a 
+well-structured, documented, and tested R package ready for distribution. 
+
+Remember that package development is an iterative process, and you may find
+yourself revisiting these steps as you refine and expand your package.
