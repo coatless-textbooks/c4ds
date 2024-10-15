@@ -15,7 +15,7 @@ To begin creating your R package, you need to set up your development environmen
 
 1. Install the operating system tools required for package development:
    - If on macOS, install Xcode Command Line Tools by running `xcode-select --install` in the terminal.
-   - If on Windows, install Rtools from https://cran.r-project.org/bin/windows/Rtools/>
+   - If on Windows, install Rtools from <https://cran.r-project.org/bin/windows/Rtools/>
    - If on Linux, install the R development package using your package manager (e.g., `sudo apt-get install r-base-dev`)
 2. Install necessary R development packages by running the following commands in the R console:
 
@@ -282,6 +282,9 @@ Example README.md structure:
 ````md
 # MyPackage
 
+<!-- badges: start -->
+<!-- badges: end -->
+
 ## Overview
 Brief description of what your package does.
 
@@ -298,7 +301,8 @@ Basic example of how to use your package:
 
 ```r
 library(MyPackage)
-result <- my_function(arg1, arg2)
+result <- square(5)
+result
 ```
 
 ## More Information
