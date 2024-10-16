@@ -1,0 +1,280 @@
+---
+title: "Debugging R Code"
+---
+
+Debugging is an essential skill for any R programmer. It's the process of 
+finding and fixing errors or unexpected behaviors in your code. This chapter
+will cover various techniques and tools to help you effectively debug R code.
+
+## Understanding Error Messages
+
+The first step in debugging is to understand the error messages R provides.
+R error messages typically include:
+
+- The type of error
+- The line number where the error occurred
+- A brief description of the problem
+
+For example:
+
+```r
+Error in mean(x) : object 'x' not found
+```
+
+This error tells us that the function `mean()` was called with an object `x`,
+but `x` doesn't exist in the current environment. From this message, we can 
+infer that `x` is not defined or is out of scope.
+
+## Using `print()` Statements
+
+One of the simplest debugging techniques is to use `print()` statements 
+throughout your code. This helps you track the values of variables and the 
+flow of your program.
+
+```{r}
+calculate_mean <- function(data) {
+  print("Entering function")
+  print(paste("Data:", data))
+  result <- mean(data)
+  print(paste("Result:", result))
+  return(result)
+}
+```
+
+When you run this function, you'll see the printed messages in the console,
+which can help you identify where things are going wrong.
+
+```{r}
+calculate_mean(c(1, 2, 3, 4, 5))
+```
+
+### Using Diagnostic Messages
+
+In addition to `print()` statements, you can use `message()`, `warning()`, and
+`stop()` to provide more informative diagnostic messages.
+
+#### `message()`
+
+The `message()` function is similar to `print()` but is intended for 
+informational messages rather than debugging output.
+
+```{r}
+calculate_mean <- function(data) {
+  if (length(data) == 0) {
+    message("Data is empty")
+  }
+  result <- mean(data)
+  return(result)
+}
+```
+
+When you run this function with an empty data vector, you'll see the message
+"Data is empty" in the console. The function will continue to execute, but the
+message can help you identify potential issues.
+
+#### `warning()`
+
+The `warning()` function is used to display non-fatal issues that may affect
+the results of your code.
+
+```{r}
+calculate_mean_with_warning <- function(data) {
+  if (length(data) == 0) {
+    warning("Data is empty")
+  }
+  result <- mean(data)
+  return(result)
+}
+```
+
+When you run this function with an empty data vector, you'll see a warning
+message in the console. The function will continue to execute, but the warning
+can help you identify potential problems. We can also use `warnings()` to
+retrieve a list of all warnings that have been generated.
+
+```{r}
+warnings()
+```
+
+We can modify the behavior of warnings by setting the global option `warn`. 
+In particular, `warn` offers three levels of support:
+
+1. `options(warn = 0)` will suppress all warnings until the top-level function has completed.
+2. `options(warn = 1)` will display warnings as they occur but not halt execution.
+3. `options(warn = 2)` converts warnings into errors that will halt execution.
+
+For debugging purposes, you may wish to use `options(warn = 2)` to catch
+issues early in your code. 
+
+#### `stop()`
+
+The `stop()` function allows you to halt execution and display an error message.
+This can be useful for catching unexpected conditions in your code.
+
+```{r}
+#| error: true
+calculate_mean_with_stop <- function(data) {
+  if (length(data) == 0) {
+    stop("Data is empty")
+  }
+  result <- mean(data)
+  return(result)
+}
+
+calculate_mean_with_stop(numeric())
+```
+
+
+## Using `browser()`
+
+The `browser()` function is a powerful tool for interactive debugging. When R 
+encounters a `browser()` statement, it pauses execution and allows you to
+inspect the current environment.
+
+```{r}
+calculate_mean_browser <- function(data) {
+  browser()
+  result <- mean(data)
+  return(result)
+}
+
+calculate_mean_browser(1:5)
+```
+
+When you run this function, R will pause at the `browser()` call, allowing you 
+to examine and manipulate variables. This is particularly useful for 
+understanding the state of your program at a specific point in time. 
+
+When you're in the browser, you can navigate through the code using the
+following commands:
+
+- `ls()` to list the objects in the current environment.
+- `print(object)` to display the value of an object.
+- `c` to continue execution by exiting the browser.
+- `f` to finish the current loop or function.
+- `n` to step to the next line.
+- `s` to step into a function call.
+- `where` to display the call stack.
+- `r` to restart if you want to re-run the function.
+- `Q` to quit the debugger.
+
+We'll see in @sec-rstudio-debugging-tools that RStudio provides a more 
+user-friendly interface for this type of debugging through icons and breakpoints.
+
+## Using an interactive debugger
+
+The `debug()` function allows you to step through a function line by line. We
+can use `debug()` to immediately start debugging a function when it is 
+called. For example:
+
+```{r}
+debug(calculate_mean)
+calculate_mean(c(1, 2, 3, 4, 5))
+```
+
+Notice, the function `calculate_mean` is now in debug mode. When you run the
+function, R will pause at the first line of the function and allow you to step
+through the code. You can use similar commands as we saw with `browser()` to
+inspect variables and control the flow of the program.
+
+If we want to remove the debugger, we would use:
+
+```{r}
+undebug(calculate_mean)
+```
+
+Though, if we only want to debug the next call, we can use `debugonce()` instead.
+This will only debug the next call to the function without needing to remove the
+debugger afterwards.
+
+
+## Using `traceback()`
+
+`traceback()` shows you the sequence of function calls that led to an error. It's particularly useful for understanding errors in complex, nested function calls.
+
+```{r}
+#| error: true
+f <- function(x) g(x)
+g <- function(x) h(x)
+h <- function(x) x + "a"
+
+f(10)  # This will cause an error
+```
+
+```r
+traceback()
+# 3. h(x)
+# 2. g(x)
+# 1. f(10)
+```
+
+## Implementing Error Handling
+
+TODO: Add a section describing fail-fast principles
+
+Proper error handling can make debugging easier. Use `try()`, `tryCatch()`, and custom error messages to manage potential issues.
+
+```{r}
+safe_mean <- function(x) {
+  tryCatch(
+    mean(x),
+    error = function(e) {
+      message("An error occurred: ", e$message)
+      return(NA)
+    }
+  )
+}
+
+safe_mean("bad input")
+```
+
+In this example, `safe_mean()` attempts to calculate the mean of a vector. 
+If an error occurs, it prints a message and returns `NA` instead of halting 
+execution.
+
+## Using RStudio's Debugging Tools  {#sec-rstudio-debugging-tools}
+
+If you're using RStudio, take advantage of its built-in debugging tools:
+
+- Breakpoints: Click next to a line number to set a breakpoint.
+- Environment pane: Inspect variable values during debugging.
+- Debug toolbar: Step through code, examine the call stack, and more.
+
+TODO: Add screenshot of the debugger
+
+## Leveraging Package-Specific Debugging Tools
+
+Some R packages provide their own debugging tools. For example, the `debugr`
+package offers a more streamlined print debugging experience.
+
+TODO: Add an example of using debugr
+
+
+## Common Debugging Pitfalls
+
+Be aware of common issues that can complicate debugging:
+
+- Scope issues: Ensure you're looking at the correct environment.
+- Data type mismatches: Check that your functions are receiving the expected data types.
+- Missing values: Be cautious of `NA` values affecting your calculations.
+
+## Best Practices for Debuggable Code
+
+Write code that's easier to debug:
+
+- Use meaningful variable names
+- Break complex operations into smaller, testable functions
+- Comment your code thoroughly
+- Use version control to track changes
+
+
+## Debugging in Quarto 
+
+TODO: Add a section on debugging with Quarto
+
+## Summary
+
+Through mastering these debugging techniques and tools, you'll be well-equipped to
+tackle even the most challenging coding issues in R. Remember, effective 
+debugging is not just about fixing errors—it's about understanding your code 
+more deeply and writing more robust programs.

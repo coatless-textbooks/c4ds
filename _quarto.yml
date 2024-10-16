@@ -12,8 +12,13 @@ book:
   repo-actions: [edit, issue]
   chapters:
     - index.qmd
-    - selection-control.qmd
-    - r-packages.qmd
+    - part: "Base R"
+      chapters: 
+        - selection-control.qmd
+        - debug-r-code.qmd
+    - part: "Development"
+      chapters: 
+        - r-packages.qmd
     
 
 format:
