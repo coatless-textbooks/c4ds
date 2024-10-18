@@ -6,6 +6,204 @@ Debugging is an essential skill for any R programmer. It's the process of
 finding and fixing errors or unexpected behaviors in your code. This chapter
 will cover various techniques and tools to help you effectively debug R code.
 
+## Types of Errors in R
+
+Understanding the different types of errors you may encounter is the first step
+in debugging code. In R, we typically deal with four main categories of errors:
+**syntax**, **runtime**, **logical**, and **semantic**.
+
+### Syntax Errors
+
+Syntax errors occur when the R interpreter cannot parse your code due to 
+violations of the language's syntax rules. These errors prevent your code from
+running at all. These errors are quicker to spot and fix because they prevent
+the code from running. Let's look at a couple common syntax errors in R:
+
+TODO: Cut down and/or move some examples to an appendix
+
+#### Missing terms
+
+Common syntax errors in R include missing terms in function calls or expressions. For example, if you forget to include a comma between arguments in a function call, R will throw an error:
+
+
+```{.r}
+plot(x, y type = "l")
+       # ^ Missing comma
+
+# Error: unexpected symbol in "plot(x, y type"
+```
+
+Or, if you forget to include a plus sign in a linear model formula, R will throw an error:
+
+
+```{.r}
+lm(y ~ x1 + x2 x3, data = my_data)
+            # ^ Missing plus sign
+
+# Error: unexpected symbol in "lm(y ~ x1 + x2 x3"
+```
+
+The more severe syntax errors appear when you forget to close parentheses or quotation marks. For example:
+
+```{.r}
+lm(y ~ x1 + x2, data = my_data
+                            # ^ Missing closing parenthesis
+```
+
+```{.r}
+# > lm(y ~ x1 + x2, data = my_data
+# +                            
+# ^ R is waiting for more input.
+```
+
+```{.r}
+print("Hello, world!)
+                  # ^ Missing quotation mark
+```
+
+```{.r}
+# > print("Hello, world!)
+# + 
+# ^ R is waiting for more input.
+```
+
+These syntax errors will require you to first stop R from waiting for more input
+by pressing `Esc` or `Ctrl + C` and then adding the missing parenthesis or
+quotation mark.
+
+#### Case and Naming Sensitivity
+
+R is case-sensitive, so you must use the correct case for function names, 
+variable names, and other identifiers. For example, if you try to call a function
+with the wrong name, R will throw an error:
+
+```{.r}
+summry(my_data)  # Should be summary()
+
+# Error in summry(my_data) : could not find function "summry"
+```
+
+Similarly, if you use the wrong case for a variable name, R will not recognize
+the variable:
+
+```{.r}
+N_STUDENTS <- 20
+y <- n_students + 5  # Should be N_STUDENTS
+
+# Error: object 'n_students' not found
+```
+
+#### Wrong Operators
+
+Using an assignment operator instead of the equality operator in a 
+conditional statement.
+
+```{.r}
+subset(df, x = 1)
+           # ^ Should be x == 1
+
+# Error in subset.default(df, x = 1) : 'subset' must be logical
+```
+
+#### Symbols instead of Strings
+
+Using symbols instead of strings in function calls or assignments.
+
+```{.r}
+factor(c(male, female, male))  # Should be c("male", "female", "male")
+
+# Error: object 'male' not found
+```
+
+### Runtime Errors
+
+Runtime errors occur during the execution of your code. The code is 
+syntactically correct but ends up encountering issues during execution. These
+errors can be caused by various reasons like trying to perform an operation on
+an object of the wrong type, accessing a non-existent variable, or using 
+incorrect functions or data structures.
+
+
+1. Attempting to calculate a correlation with non-numeric data
+
+```r
+df <- data.frame(x = c("a", "b", "c"), y = c(1, 2, 3))
+cor(df)
+# Error in cor(df) : 'x' must be numeric
+```
+
+In this example, the `cor()` function expects numeric data, but the `x` column
+contains character data, resulting in a runtime error when trying to calculate
+the correlation.
+
+2. Trying to access a non-existent variable.
+
+```r
+print(non_existent_variable)
+# Error: object 'non_existent_variable' not found
+```
+
+In this case, the variable `non_existent_variable` doesn't exist in the current
+environment, leading to a runtime error when trying to print it.
+
+
+### Logical Errors
+
+Logical errors are the most subtle and often the hardest to detect. These 
+errors don't cause the program to crash or produce error messages, but they
+result in incorrect output. They occur when the code doesn't do what you 
+intended it to do.
+
+Flawed algorithm for calculating factorial
+
+```{r}
+factorial <- function(n) {
+  result <- 0
+  for (i in 1:n) {
+    result <- result + i  # Should be result <- result * i
+  }
+  return(result)
+}
+```
+
+
+Off-by-one errors:
+
+```{r}
+days_in_month <- c(31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31)
+for (i in 0:12) {  # Should be 1:12
+ print(days_in_month[i])
+}
+```
+
+### Semantic Errors
+
+Semantic errors occur when code is syntactically correct and runs without 
+throwing exceptions, but produces incorrect or unintended results. These 
+errors are logical flaws in the program that don't align with the
+intended behavior. They can be challenging to identify because they don't
+manifest as errors or warnings.
+
+Take the following example of a function that checks if a person is an adult:
+
+```{r}
+is_adult <- function(age) {
+  age > 18 & age < 65  # Should be age >= 18 & age < 65
+}
+
+
+is_adult(17)
+is_adult(18)
+is_adult(19)
+```
+
+In this case, the function `is_adult()` incorrectly classifies 18-year-olds as
+non-adults. This is a semantic error that doesn't produce an error message but
+produces incorrect results.
+
+TODO: Add a section comparing and contrasting semantic vs. logical errors.
+
+
 ## Understanding Error Messages
 
 The first step in debugging is to understand the error messages R provides.
@@ -24,6 +222,7 @@ Error in mean(x) : object 'x' not found
 This error tells us that the function `mean()` was called with an object `x`,
 but `x` doesn't exist in the current environment. From this message, we can 
 infer that `x` is not defined or is out of scope.
+
 
 ## Using `print()` Statements
 
