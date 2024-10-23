@@ -126,7 +126,7 @@ updated regularly.
    - Or, by typing in "Spotlight" in the upper right-hand corner `Terminal`.
 2. Once `Terminal` is open type:
    ```bash
-   xcode-select --install
+   sudo xcode-select --install
    ```
 3. This will trigger an installation pop-up. Please follow the installer prompts.
 4. To verify the success of the installation, type into `Terminal`:
