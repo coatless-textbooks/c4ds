@@ -52,6 +52,8 @@ official Git for Windows installer for its reliability and included tools.
 
 #### Step-by-Step Windows Installation
 
+{{<video https://youtu.be/TmTjXuqNnhA >}}
+
 1. **Download the Installer**
 
    - Navigate to [git-scm.com/download/win](https://git-scm.com/download/win)
@@ -115,12 +117,22 @@ provides a stable, reliable, light-weight, and easy-to-maintain installation
 of Git. This is because Xcode Command Line Tools are Apple supported and 
 updated regularly.
 
-1. Open Terminal
-2. Run the following command:
+
+{{<video https://www.youtube.com/watch?v=Z01lzHNrSdU >}}
+
+
+1. Opening `Terminal`
+   - Found under `Applications` -> `Utilities` -> `Terminal.app`;
+   - Or, by typing in "Spotlight" in the upper right-hand corner `Terminal`.
+2. Once `Terminal` is open type:
    ```bash
    xcode-select --install
    ```
-3. Follow the prompts on the pop-up to complete installation.
+3. This will trigger an installation pop-up. Please follow the installer prompts.
+4. To verify the success of the installation, type into `Terminal`:
+   ```bash
+   git --version
+   ```
 
 
 #### Using Homebrew
@@ -179,6 +191,7 @@ This information will be attached to your commits.
 
 ### Basic Configuration
 
+
 Run the following commands in Terminal to set your name and email:
 
 ```bash
@@ -191,6 +204,17 @@ Replace `"Your Name"` and `"your.email@example.com"` with your actual name and e
 :::{.callout-important}
 Do not use a fake name or email. Your identity is crucial for collaboration and accountability.
 :::
+
+
+:::{.panel-tabset}
+### macOS Video Tutorial
+{{<video https://www.youtube.com/watch?v=CnKpOwAFeIE >}}
+
+### Windows Video Tutorial
+{{<video https://www.youtube.com/watch?v=jEacLROiTNU >}}
+
+:::
+
 
 ### Advanced Configuration
 
