@@ -1,0 +1,372 @@
+---
+title: Installing Git and Setting Up GitHub
+---
+
+Version control is a fundamental skill in modern software development and 
+data science. To address the challenges of code management, collaboration, and
+backup, Git has emerged as the industry standard. Git is a distributed version
+control system that tracks changes to your codebase, allowing you to work
+efficiently and collaboratively.
+
+This chapter will guide you through the process of setting up Git and GitHub on
+your computer, regardless of your operating system. We'll explore not just the
+how, but also the why behind each step, ensuring you have a solid foundation
+for your development journey.
+
+## Why Git?
+
+Git solves several critical problems in software development:
+
+- **History Tracking**: Every change to your code is recorded, allowing you to review or revert changes when needed.
+- **Collaboration**: Multiple developers can work on the same project without conflicts.
+- **Branching**: You can experiment with new features without affecting the main codebase.
+- **Backup**: Your code is stored both locally and remotely, providing redundancy.
+
+### Git vs. GitHub
+
+Before we go further, let's clarify an important distinction:
+
+- **Git** is the version control system you install on your computer
+- **GitHub** is a web-based platform that hosts Git repositories and adds collaboration features
+
+## Prerequisites
+
+Before installing Git and setting up GitHub, ensure you have:
+
+- Administrative access to your computer
+- A stable internet connection
+- Approximately 2GB of free disk space
+- Basic familiarity with command-line operations
+- A modern web browser for GitHub account creation
+
+## Installing Git
+
+The installation process varies by operating system. We'll cover each major 
+platform in detail. Choose the section that matches your system. Do not install
+Git from unofficial sources to avoid security risks.
+
+### Windows Installation
+
+Windows users have several options for installing Git, but we recommend the 
+official Git for Windows installer for its reliability and included tools.
+
+#### Step-by-Step Windows Installation
+
+1. **Download the Installer**
+
+   - Navigate to [git-scm.com/download/win](https://git-scm.com/download/win)
+   - The download should start automatically
+   - Choose the appropriate version (32-bit or 64-bit)
+     - If unsure, select the 64-bit version (most modern systems support and use it.)
+
+2. **Run the Installer**
+ 
+  During installation, you'll encounter several configuration options. Here are
+   our recommended settings with explanations:
+
+  a. **Select Components**
+   
+   ```
+   ✓ Windows Explorer integration
+   ✓ Git Bash Here
+   ✓ Git GUI Here
+   ✓ Git LFS (Large File Support)
+   ✓ Associate .git* configuration files with default text editor
+   ✓ Associate .sh files to be run with Bash
+   ```
+
+  b. **Choosing the default editor**
+  
+  - Select your preferred editor (we recommend Visual Studio Code if installed)
+  - If unsure, choose Notepad
+
+  c. **Adjusting your PATH environment**
+  
+  - Choose "Git from the command line and also from 3rd-party software"
+  - This allows you to use Git from both Git Bash and Windows Command Prompt
+
+  d. **Choosing HTTPS transport backend**
+  
+  - Select "Use the native Windows Secure Channel library"
+  - This integrates better with Windows security features
+
+  e. **Configuring line ending conversions**
+    - Select "Checkout Windows-style, commit Unix-style line endings"
+    - This prevents issues when collaborating across different operating systems
+
+3. **Verify Installation**
+   
+   Open Git Bash or Command Prompt and type:
+   
+   ```bash
+   git --version
+   ```
+
+###  macOS Installation
+
+macOS offers multiple installation methods. We'll cover both the recommended 
+Xcode CLI approach and Homebrew. Please choose the one that suits your needs.
+
+
+#### Using the Xcode Command Line Tools
+
+We recommend using Xcode Command Line Tools method for macOS users as it 
+provides a stable, reliable, light-weight, and easy-to-maintain installation
+of Git. This is because Xcode Command Line Tools are Apple supported and 
+updated regularly.
+
+1. Open Terminal
+2. Run the following command:
+   ```bash
+   xcode-select --install
+   ```
+3. Follow the prompts on the pop-up to complete installation.
+
+
+#### Using Homebrew
+
+Homebrew is a package manager for macOS that simplifies the installation of
+software. If you continue on your data science journey, you'll find Homebrew
+useful for installing other tools and libraries. Thus, we're including it here
+as an alternative installation method. That said, Xcode Command Line Tools
+is automatically installed through a GUI-free method
+when you run the Homebrew installation command.
+
+If you already have Homebrew installed, you can skip the first step.
+
+1. **Install Homebrew**
+   
+   Open Terminal and run:
+   ```bash
+   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+   ```
+
+   Follow the prompts to complete installation.
+
+2. **Install Git**
+   ```bash
+   brew install git
+   ```
+
+
+### Linux Installation
+
+The installation process varies by distribution. We'll cover the most popular ones.
+If your distribution is not listed, refer to the [official Git documentation](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git).
+
+#### Ubuntu/Debian
+
+In Ubuntu and Debian-based systems, you can install Git using `apt`. 
+Open Terminal and run:
+
+```bash
+sudo apt update
+sudo apt install git-all
+```
+
+#### Fedora
+
+In Fedora, you can install Git using `dnf`. Open Terminal and run:
+
+```bash
+sudo dnf install git-all
+```
+
+## Configuring Git
+
+After installation, you need to configure Git with your identity. 
+This information will be attached to your commits.
+
+### Basic Configuration
+
+Run the following commands in Terminal to set your name and email:
+
+```bash
+git config --global user.name "Your Name"
+git config --global user.email "your.email@example.com"
+```
+
+Replace `"Your Name"` and `"your.email@example.com"` with your actual name and email address.
+
+:::{.callout-important}
+Do not use a fake name or email. Your identity is crucial for collaboration and accountability.
+:::
+
+### Advanced Configuration
+
+We recommend setting up a few additional configurations to enhance your Git experience.
+You do not need to set these up immediately, but they can be helpful as you
+become more comfortable with Git.
+
+We recommend the following configurations:
+
+```bash
+# Set default branch name to 'main'
+git config --global init.defaultBranch main
+
+# Enable colorful git output
+git config --global color.ui auto
+
+# Configure line ending behavior
+git config --global core.autocrlf input  # On Unix/Mac
+git config --global core.autocrlf true   # On Windows
+```
+
+## Setting Up GitHub
+
+GitHub extends Git's capabilities with a web-based interface and collaboration features.
+To use GitHub, you need to create an account and set up SSH authentication.
+We'll guide you through both processes.
+
+### Creating a GitHub Account
+
+First, create a GitHub account if you don't have one already. You can sign up for free
+by following these steps:
+
+1. Visit [github.com](https://github.com)
+2. Click "Sign up"
+3. Follow the registration process
+4. Choose the free plan for personal use
+5. Verify your email address
+   - We recommend using your `.edu` email for student benefits
+   
+Need more help? Check out GitHub's [Creating an account on GitHub](https://docs.github.com/en/get-started/start-your-journey/creating-an-account-on-github) support page.
+   
+### Student Benefits
+
+GitHub offers free access to its Pro features for students. To activate this:
+
+1. Go to [GitHub Education](https://education.github.com)
+2. Click ["Join GitHub Education"](https://education.github.com/discount_requests/application?type=student)
+3. Follow the instructions to verify your student status
+
+You will need to provide proof of enrollment, such as a school email and ID.
+GitHub will also check your computer's location relative to your school's location.
+Thus, we recommend using the school network or VPN if studying abroad.
+
+With a verified student account, you can access 
+
+- [GitHub Copilot](https://github.com/features/copilot): AI-powered code completion;
+- [GitHub Actions](https://github.com/features/actions): Extended Automated workflows for CI/CD;
+- [GitHub Codespace](https://github.com/features/codespaces): Cloud-based development environment;
+- [GitHub Pages](https://pages.github.com/): Free hosting for static websites;
+
+And [more](https://education.github.com/pack)!
+
+You will need to re-verify your student status every other year.
+
+### Setting Up SSH Authentication
+
+SSH keys provide a secure way to connect to GitHub without entering your password repeatedly.
+Previously, we could use our GitHub username and password to authentication over SSH.
+As of August 13, 2021, GitHub removed that option in favor of SSH keys or personal access tokens.
+
+We'll guide you through setting up SSH keys for secure, password-free authentication. 
+
+If you already have an SSH key, you can skip the key generation steps.
+
+Moreover, you may want to consult the official GitHub documentation on 
+[Generating a new SSH key and adding it to the ssh-agent](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent). 
+These instructions can change depending on operating system and advances in
+generating SSH keys.
+
+#### Generating SSH Keys
+
+We can generate SSH keys using the `ssh-keygen` command.
+
+1. **Generate SSH Key**
+   ```bash
+   ssh-keygen -t ed25519 -C "your.email@example.com"
+   ```
+   
+   When prompted:
+   - Press Enter to accept the default file location
+   - Enter a secure passphrase (recommended)
+
+2. **Start SSH Agent**
+   ```bash
+   eval "$(ssh-agent -s)"
+   ```
+
+3. **Add Your SSH Key**
+
+:::{.panel-tabset}
+### For Windows/Linux
+
+```bash
+ssh-add ~/.ssh/id_ed25519
+```
+
+### For macOS:
+ 
+```bash
+ssh-add --apple-use-keychain ~/.ssh/id_ed25519
+```
+:::
+
+4. **Add Key to GitHub**
+
+   - Copy your public key:
+     ```bash
+     cat ~/.ssh/id_ed25519.pub
+     ```
+   - Go to GitHub → [Settings](https://github.com/settings/) → [SSH and GPG keys](https://github.com/settings/keys)
+   - Click ["New SSH key"](https://github.com/settings/ssh/new)
+   - Paste your key and save
+     - We recommend giving your key a descriptive name especially if you have
+       multiple keys (e.g., "Work Laptop", "Personal Desktop").
+
+5. **Verify Connection**
+   ```bash
+   ssh -T git@github.com
+   ```
+
+## Summary
+
+You now have a fully configured Git installation and GitHub account. This setup
+will serve as the foundation for all your version control needs. In the next 
+chapter, we'll explore basic Git commands and workflows in detail.
+
+### Key Takeaways
+
+- Git is a powerful version control system that works across all major platforms
+- GitHub provides a centralized location for storing and sharing code
+- SSH keys enable secure, password-free authentication
+- Proper configuration is crucial for a smooth Git experience
+
+## Additional Resources
+
+- [Pro Git Book](https://git-scm.com/book/en/v2)
+- [GitHub Guides](https://guides.github.com)
+
+
+## Troubleshooting
+
+If you encounter issues during installation or configuration, refer to the following
+common problems and solutions. If your issue persists, please let us know on
+our discussion forums or on the GitHub repository's issue tracker.
+
+### SSH Issues
+
+If you encounter SSH connection problems:
+
+1. Verify SSH agent is running:
+   ```bash
+   eval "$(ssh-agent -s)"
+   ```
+2. Check if your key is added:
+   ```bash
+   ssh-add -l
+   ```
+3. Verify GitHub can read your key:
+   ```bash
+   ssh -vT git@github.com
+   ```
+
+### Git Configuration Issues
+
+To view your current Git configuration:
+
+```bash
+git config --list
+```

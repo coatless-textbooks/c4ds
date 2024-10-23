@@ -16,6 +16,9 @@ book:
       chapters: 
         - selection-control.qmd
         - debug-r-code.qmd
+    - part: "Version Control"
+      chapters: 
+        - setting-up-git-and-github.qmd
     - part: "Development"
       chapters: 
         - r-packages.qmd
